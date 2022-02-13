@@ -1,6 +1,6 @@
 #program RC4
 #basic belum dimodifikasi
-
+import codecs
 
 def convertToAscii(string):
     return ([ord(c) for c in string])
@@ -10,7 +10,7 @@ def convertToChar(values):
     string = "".join([chr(c) for c in values])
     return string
 
-def KSA(kunci):
+def ksa(kunci):
     n_kunci = len(kunci)
     #larik S [0,1,2, ... , 255]
     S = list(range(256))
@@ -21,7 +21,7 @@ def KSA(kunci):
         S[i], S[j] = S[j], S[i]
     return S
 
-def PRGA(arr):
+def prga(arr):
     i = 0
     j = 0
     while True:
@@ -34,8 +34,8 @@ def PRGA(arr):
         yield stream
 
 def getKeystream(kunci):
-    arr = KSA(kunci)
-    key = PRGA(arr)
+    arr = ksa(kunci)
+    key = prga(arr)
     return key
 
 def XORproccessing(input, kunci):
@@ -62,6 +62,7 @@ def enkripsi(plainteks, kunci):
     cipherteks = XORproccessing(plainteks, kunci)
     return cipherteks
 
-#gangerti
 def dekripsi(cipherteks, kunci):
-    return 0
+    cipherteks = codecs.decode(cipherteks, 'hex_codec')
+    plainteks = XORproccessing(cipherteks, kunci)
+    return codecs.decode(plainteks, 'hex_codec').decode('utf-8') #masih copas
