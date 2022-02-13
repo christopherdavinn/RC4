@@ -1,13 +1,14 @@
 #program RC4
-
 #basic belum dimodifikasi
 
 
 def convertToAscii(string):
-    return ([ord(c) for c in s])
+    return ([ord(c) for c in string])
 
-def convertToChar():
-    return 0
+def convertToChar(values):
+    #input berupa list
+    string = "".join([chr(c) for c in values])
+    return string
 
 def KSA(kunci):
     n_kunci = len(kunci)
@@ -20,13 +21,47 @@ def KSA(kunci):
         S[i], S[j] = S[j], S[i]
     return S
 
-def PRGA(S):
+def PRGA(arr):
     i = 0
     j = 0
     while True:
         i = (i + 1) % 256
-        j = (j + S[i]) % 256
+        j = (j + arr[i]) % 256
         #swap
-        S[i], S[j] = S[j], S[i]
-        K = S[(S[i] + S[j]) % 256]
-        yield K
+        arr[i] = arr[j]
+        arr[j] = arr[i]
+        stream = arr[(arr[i] + arr[j]) % 256]
+        yield stream
+
+def getKeystream(kunci):
+    arr = KSA(kunci)
+    key = PRGA(arr)
+    return key
+
+def XORproccessing(input, kunci):
+    #teks adalah ASCII, key adalah ASCII
+    #masih buat teks, kalau yang multimedia belum
+    key = convertToAscii(kunci)
+    keystream = getKeystream(key)
+
+    #if input teks
+    teks = convertToAscii(input)
+    #if inputnya in binary form
+    # teks = codecs.decode(input)
+
+    result = []
+    for i in teks:
+        xor = i ^ next(keystream) #XOR
+        val = ("%02X" % xor)
+        result.append(val)
+    toString = ''.join(result)
+    return toString
+
+def enkripsi(plainteks, kunci):
+    plainteks = [ord(c) for c in plainteks]
+    cipherteks = XORproccessing(plainteks, kunci)
+    return cipherteks
+
+#gangerti
+def dekripsi(cipherteks, kunci):
+    return 0
