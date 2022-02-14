@@ -9,7 +9,53 @@ class rc4Screen(QMainWindow):
     def __init__(self):
         #setup rc4 screen (main screen)
         super(rc4Screen, self).__init__()
-        loadUi("ui/rc4gui2.ui", self)
+        loadUi("ui/rc4gui.ui", self)
+
+
+        self.inputBut.clicked.connect(self.inputFile) #dari file
+        self.inputBut.clicked.connect(self.processFile) #neken tombol process
+        self.path = ""
+        # def inputFile(self):
+        #     file = QtWidgets.QFileDialog.getOpenFileName()
+        #     self.path = file[0]
+
+        #     self.inputBut.setText(self.path.split('/')[-1])
+
+        def processFile(self):
+            #baca dari dropdown
+            cipherMethod = self.cipheroption.currentText() #baca dropdownnya
+            result = ""
+            key = self.keyInput.toPlainText()
+
+            if cipherMethod == "Plain Text":
+                pt = self.textInput.toPlainText() #str
+            elif cipherMethod == "Text File":
+                if(self.path != ""): #ada file txtnya
+                    ext = os.path.splitext(self.path)[1]
+                    if(ext == ".txt"):
+                        f = open(self.path)
+                        pt = f.read() #str
+                    else:
+                        result += ""
+            else: #binaryfile
+                if(self.path != ""):
+                    directory = os.path.dirname(os.path.realpath(__file__))
+                    fileName = "output/" + str(uuid.uuid4()) + os.path.splitext(self.path)[1]
+                    filePath = os.path.join(directory, fileName)
+                    #open file
+                    f = open(filePath, 'rb')
+                    fileByte = f.read()
+                    pt = bytearray(fileByte) #ubah jadi byte
+                    #pt = enumerate(filedata)
+                else:
+                    result += ""
+
+
+            #baca dari radiobutton
+            #proceed
+
+
+
 
 #main prog
 app = QApplication(sys.argv)

@@ -40,14 +40,14 @@ def getKeystream(kunci):
 
 def XORproccessing(input, kunci):
     #teks adalah ASCII, key adalah ASCII
-    #masih buat teks, kalau yang multimedia belum
     key = convertToAscii(kunci)
     keystream = getKeystream(key)
 
     #if input teks
-    teks = convertToAscii(input)
-    #if inputnya in binary form
-    # teks = codecs.decode(input)
+    if type(input) == str:
+        teks = convertToAscii(input) #array 
+    elif type(input) == bytes:
+        teks = input #array
 
     result = []
     for i in teks:
@@ -58,7 +58,6 @@ def XORproccessing(input, kunci):
     return toString
 
 def enkripsi(plainteks, kunci):
-    plainteks = [ord(c) for c in plainteks]
     cipherteks = XORproccessing(plainteks, kunci)
     return cipherteks
 
