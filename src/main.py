@@ -120,6 +120,7 @@ class rc4Screen(QMainWindow):
                 pt = rc4.dekripsi(input_text, key)
                 result += pt
 
+
         #nampilin output di tb
         self.outputTB.setPlainText(result)
 
