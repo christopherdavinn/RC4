@@ -1,7 +1,7 @@
 def convert(s): # Convert string to ASCII
     return ([ord(c) for c in s])
 
-def getLsfr(kunci):
+def getLsfr(key):
     key = convert(kunci) #array of ASCII number
     binary = ''.join(format(i, '08b') for i in key)
     print(binary)

@@ -1,6 +1,7 @@
 #program RC4
 #basic belum dimodifikasi
 import codecs
+import lsfr
 
 def convertToAscii(string):
     return ([ord(c) for c in string])
@@ -28,15 +29,18 @@ def prga(arr):
         i = (i + 1) % 256
         j = (j + arr[i]) % 256
         #swap
-        arr[i] = arr[j]
+        temp = []
+        temp = arr[j]
         arr[j] = arr[i]
+        arr[i] = temp
         stream = arr[(arr[i] + arr[j]) % 256]
         yield stream
 
 def getKeystream(kunci):
     arr = ksa(kunci)
-    key = prga(arr)
-    return key
+    #keyTemp = lsfr.getLsfr(arr)
+    keyStream = prga(arr)
+    return keyStream
 
 def XORproccessing(input, kunci):
     #teks adalah ASCII, key adalah ASCII
@@ -46,8 +50,9 @@ def XORproccessing(input, kunci):
     #if input teks
     if type(input) == str:
         teks = convertToAscii(input) #to array of ascii number
-    elif type(input) == bytes:
-        teks = input #already array of ascii number
+        print("dia teks")
+    else:
+        teks = input
 
     result = []
     for i in teks:

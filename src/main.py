@@ -3,6 +3,9 @@ from PyQt5.QtWidgets import QApplication, QMainWindow
 from PyQt5.uic import loadUi
 import sys
 import rc4
+import codecs
+import os
+import uuid
 
 #initial rc4 GUI
 class rc4Screen(QMainWindow):
@@ -47,41 +50,75 @@ class rc4Screen(QMainWindow):
                 fileName = "output/" + str(uuid.uuid4()) + os.path.splitext(self.path)[1]
                 filePath = os.path.join(directory, fileName)
                 #open file
-                f = open(filePath, 'rb')
+                f = open(self.path, 'rb')
                 fileByte = f.read()
                 input_text = bytearray(fileByte) #array of ascii numbers
+                
+                # input_text =[]
+                # a = 0
+                # for i in byte_array:
+                #     input_text.append(i)
+                #     a = a+1            
                 f.close()
             else:
                 result += ""
 
         #get method encrypt/decrypt
         if self.encBut.isChecked(): #ENKRIPSI
-            ct = rc4.enkripsi(input_text, key)
-            result += ct
-
             if cipherMethod == "Text File":
-                #perlu di save ke textfile kan??
-                text_file = open("ecnrypted.txt", "w")
-                text_file.write(result)
-                text_file.close()
+                if (ct != ''): #tidak kosong
+                    ct = rc4.enkripsi(input_text, key)
+                    result += "Encrypt success!\n"
+                    result += ct
+                    print(result)
+                    text_file = open("output/encrypted.txt", "w")
+                    text_file.write(ct)
+                    text_file.close()
+                else: #
+                    result += "Fail encrypt file! There is no input value!"
+            
             elif cipherMethod == "Binary File":
-                f = open(filePath, 'wb')
-                f.write(result)
-                f.close()
+                byte_array =[]
+                a = 0
+                for i in input_text:
+                    byte_array.append(i)
+                    a = a+1    
+                ct = rc4.enkripsi(byte_array, key)
+                byteResult = bytes(ct, 'utf-8')
+                #print(byte)
+                result += "Encrypt success!\n"
+
+                jpg_file = open("output/ecrypted.jpg", "wb")
+                jpg_file.write(byteResult)
+                jpg_file.close()
+            else: #input dari keyboard
+                ct = rc4.enkripsi(input_text, key)
+                result += ct
 
         else: #decrypt method
-            pt = rc4.dekripsi(input_text, key)
-            result += pt
-
             if cipherMethod == "Text File":
-                #perlu di save ke textfile kan??
-                text_file = open("decrypted.txt", "w")
-                text_file.write(result)
+                pt = rc4.dekripsi(input_text, key)
+                text_file = open("output/decrypted.txt", "w")
+                text_file.write(pt)
                 text_file.close()
+                result += "Decrypt success!\n"
+                result += pt
+                
             elif cipherMethod == "Binary File":
-                f = open(filePath, 'wb')
-                f.write(result)
-                f.close()
+                #ss = rc4.convertToChar(input_text)
+
+                pt = rc4.dekripsi(input_text, key)
+                byteResult = bytes(pt, 'utf-8')
+                #print(byte)
+                result += "yeay"
+
+                jpg_file = open("output/decrypted.jpg", "wb")
+                jpg_file.write(byteResult)
+                jpg_file.close()
+
+            else: #keyboard
+                pt = rc4.dekripsi(input_text, key)
+                result += pt
 
         #nampilin output di tb
         self.outputTB.setPlainText(result)
