@@ -11,24 +11,30 @@ class rc4Screen(QMainWindow):
         super(rc4Screen, self).__init__()
         loadUi("ui/rc4gui.ui", self)
 
-
         self.inputBut.clicked.connect(self.inputFile) #dari file
-        self.inputBut.clicked.connect(self.processFile) #neken tombol process
+        self.processBut.clicked.connect(self.processFile) #neken tombol process
+
         self.path = ""
-        # def inputFile(self):
-        #     file = QtWidgets.QFileDialog.getOpenFileName()
-        #     self.path = file[0]
 
-        #     self.inputBut.setText(self.path.split('/')[-1])
+    def inputFile(self):
+        file = QtWidgets.QFileDialog.getOpenFileName()
+        self.path = file[0]
 
-        def processFile(self):
-            #baca dari dropdown
-            cipherMethod = self.cipheroption.currentText() #baca dropdownnya
-            result = ""
-            key = self.keyInput.toPlainText()
+        self.inputBut.setText(self.path.split('/')[-1])
 
+    def processFile(self):
+        #baca dari dropdown
+        cipherMethod = self.inputType.currentText() #baca dropdownnya
+        result = ""
+        key = self.keyInput.toPlainText()
+
+        #encrypt code
+        if self.encBut.isChecked(): #baca dari radiobutton
             if cipherMethod == "Plain Text":
                 pt = self.textInput.toPlainText() #str
+                ct = rc4.enkripsi(pt, key)
+                result += ct
+
             elif cipherMethod == "Text File":
                 if(self.path != ""): #ada file txtnya
                     ext = os.path.splitext(self.path)[1]
@@ -37,6 +43,7 @@ class rc4Screen(QMainWindow):
                         pt = f.read() #str
                     else:
                         result += ""
+
             else: #binaryfile
                 if(self.path != ""):
                     directory = os.path.dirname(os.path.realpath(__file__))
@@ -50,9 +57,17 @@ class rc4Screen(QMainWindow):
                 else:
                     result += ""
 
-
-            #baca dari radiobutton
             #proceed
+
+        #decrypt code
+        else: #baca dari radiobutton
+            if cipherMethod == "Plain Text":
+                ct = self.textInput.toPlainText() #str
+                pt = rc4.dekripsi(ct, key)
+                result += pt
+
+        #nampilin output di tb
+        self.outputTB.setPlainText(result)
 
 
 

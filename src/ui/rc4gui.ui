@@ -177,7 +177,7 @@ background-color: none;</string>
      <string>Plain Text</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="cryptBut">
+   <widget class="QPushButton" name="processBut">
     <property name="geometry">
      <rect>
       <x>540</x>
@@ -292,7 +292,7 @@ QPushButton:pressed {
      <string>Save</string>
     </property>
    </widget>
-   <widget class="QRadioButton" name="radioButton">
+   <widget class="QRadioButton" name="encBut">
     <property name="geometry">
      <rect>
       <x>590</x>
@@ -310,7 +310,7 @@ background-color: none;</string>
      <string>Encrypt</string>
     </property>
    </widget>
-   <widget class="QRadioButton" name="radioButton_2">
+   <widget class="QRadioButton" name="decBut">
     <property name="geometry">
      <rect>
       <x>760</x>
@@ -341,7 +341,7 @@ background-color: none;</string>
      <string notr="true">background-color: #fff8e1</string>
     </property>
    </widget>
-   <widget class="QComboBox" name="comboBox">
+   <widget class="QComboBox" name="inputType">
     <property name="geometry">
      <rect>
       <x>70</x>
@@ -401,13 +401,13 @@ background-color: none;</string>
    <zorder>textInput</zorder>
    <zorder>inputBut</zorder>
    <zorder>label_2</zorder>
-   <zorder>cryptBut</zorder>
+   <zorder>processBut</zorder>
    <zorder>label_4</zorder>
    <zorder>keyInput</zorder>
    <zorder>enigmaBut</zorder>
-   <zorder>radioButton</zorder>
-   <zorder>radioButton_2</zorder>
-   <zorder>comboBox</zorder>
+   <zorder>encBut</zorder>
+   <zorder>decBut</zorder>
+   <zorder>inputType</zorder>
    <zorder>label_5</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
