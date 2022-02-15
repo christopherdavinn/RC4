@@ -23,48 +23,42 @@ class rc4Screen(QMainWindow):
         self.inputBut.setText(self.path.split('/')[-1])
 
     def processFile(self):
-        #baca dari dropdown
         cipherMethod = self.inputType.currentText() #baca dropdownnya
         result = ""
         key = self.keyInput.toPlainText()
 
-        #encrypt code
-        if self.encBut.isChecked(): #baca dari radiobutton
-            if cipherMethod == "Plain Text":
-                pt = self.textInput.toPlainText() #str
-                ct = rc4.enkripsi(pt, key)
-                result += ct
+        #get input teks/file
+        if cipherMethod == "Plain Text":
+            input_text = self.textInput.toPlainText() #string text
 
-            elif cipherMethod == "Text File":
-                if(self.path != ""): #ada file txtnya
-                    ext = os.path.splitext(self.path)[1]
-                    if(ext == ".txt"):
-                        f = open(self.path)
-                        pt = f.read() #str
-                    else:
-                        result += ""
-
-            else: #binaryfile
-                if(self.path != ""):
-                    directory = os.path.dirname(os.path.realpath(__file__))
-                    fileName = "output/" + str(uuid.uuid4()) + os.path.splitext(self.path)[1]
-                    filePath = os.path.join(directory, fileName)
-                    #open file
-                    f = open(filePath, 'rb')
-                    fileByte = f.read()
-                    pt = bytearray(fileByte) #ubah jadi byte
-                    #pt = enumerate(filedata)
+        elif cipherMethod == "Text File":
+            if(self.path != ""): #ada input file
+                ext = os.path.splitext(self.path)[1]
+                if(ext == ".txt"):
+                    f = open(self.path)
+                    input_text = f.read() #string text
                 else:
                     result += ""
 
-            #proceed
+        else: #binaryfile
+            if(self.path != ""): #ada input file
+                directory = os.path.dirname(os.path.realpath(__file__))
+                fileName = "output/" + str(uuid.uuid4()) + os.path.splitext(self.path)[1]
+                filePath = os.path.join(directory, fileName)
+                #open file
+                f = open(filePath, 'rb')
+                fileByte = f.read()
+                input_text = bytearray(fileByte) #array of ascii numbers
+            else:
+                result += ""
 
-        #decrypt code
-        else: #baca dari radiobutton
-            if cipherMethod == "Plain Text":
-                ct = self.textInput.toPlainText() #str
-                pt = rc4.dekripsi(ct, key)
-                result += pt
+        #get method encrypt/decrypt
+        if self.encBut.isChecked():
+            ct = rc4.enkripsi(input_text, key)
+            result += ct
+        else: #decrypt method
+            pt = rc4.dekripsi(input_text, key)
+            result += pt
 
         #nampilin output di tb
         self.outputTB.setPlainText(result)
