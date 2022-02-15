@@ -37,6 +37,7 @@ class rc4Screen(QMainWindow):
                 if(ext == ".txt"):
                     f = open(self.path)
                     input_text = f.read() #string text
+                    f.close()
                 else:
                     result += ""
 
@@ -49,24 +50,43 @@ class rc4Screen(QMainWindow):
                 f = open(filePath, 'rb')
                 fileByte = f.read()
                 input_text = bytearray(fileByte) #array of ascii numbers
+                f.close()
             else:
                 result += ""
 
         #get method encrypt/decrypt
-        if self.encBut.isChecked():
+        if self.encBut.isChecked(): #ENKRIPSI
             ct = rc4.enkripsi(input_text, key)
             result += ct
+
+            if cipherMethod == "Text File":
+                #perlu di save ke textfile kan??
+                text_file = open("ecnrypted.txt", "w")
+                text_file.write(result)
+                text_file.close()
+            elif cipherMethod == "Binary File":
+                f = open(filePath, 'wb')
+                f.write(result)
+                f.close()
+
         else: #decrypt method
             pt = rc4.dekripsi(input_text, key)
             result += pt
 
+            if cipherMethod == "Text File":
+                #perlu di save ke textfile kan??
+                text_file = open("decrypted.txt", "w")
+                text_file.write(result)
+                text_file.close()
+            elif cipherMethod == "Binary File":
+                f = open(filePath, 'wb')
+                f.write(result)
+                f.close()
+
         #nampilin output di tb
         self.outputTB.setPlainText(result)
 
-
-
-
-#main prog
+#main program
 app = QApplication(sys.argv)
 main = rc4Screen()
 widget = QtWidgets.QStackedWidget()
