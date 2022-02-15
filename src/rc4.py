@@ -64,4 +64,18 @@ def enkripsi(plainteks, kunci):
 def dekripsi(cipherteks, kunci):
     cipherteks = codecs.decode(cipherteks, 'hex_codec')
     plainteks = XORproccessing(cipherteks, kunci)
-    return codecs.decode(plainteks, 'hex_codec').decode('utf-8') #masih copas
+    return codecs.decode(plainteks, 'hex_codec').decode('utf-8') #turn bytes into string
+
+
+
+# string = "hello world"
+# a = convertToAscii(string)
+# print (a)
+#hasil : [104, 101, 108, 108, 111, 32, 119, 111, 114, 108, 100]
+
+# string = "hello world"
+# a = bytes(string, 'ascii')
+# for byte in a:
+#     print(byte, end=' ')
+# print (a)
+#hasil: 104 101 108 108 111 32 119 111 114 108 100 
