@@ -8,8 +8,8 @@ def convertToAscii(string):
     return ([ord(c) for c in string])
 
 def getLsfr(kunci):
-    key = convert(kunci) #array of ASCII number
-    binary = ''.join(format(i, '08b') for i in key)
+    #key = convert(kunci) #array of ASCII number
+    binary = ''.join(format(i, '08b') for i in kunci)
     print(binary)
     l = len(binary)
     output = ""

@@ -37,8 +37,8 @@ def prga(arr):
         yield stream
 
 def getKeystream(kunci):
-    arr = ksa(kunci)
-    #keyTemp = lsfr.getLsfr(arr)
+    temp = lsfr.getLsfr(kunci)
+    arr = ksa(temp)
     keyStream = prga(arr)
     return keyStream
 
