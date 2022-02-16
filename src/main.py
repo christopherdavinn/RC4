@@ -93,13 +93,15 @@ class rc4Screen(QMainWindow):
             if cipherMethod == "Text File":
                 if (self.path != ''): #tidak kosong
                     ct = rc4.enkripsi(input_text, key)
-                    result += "Encrypt success!\n"
-                    result += ct
 
                     text_file = open("output/encrypted.txt", "w")
                     text_file.write(ct)
                     text_file.close()
-                    result += "\n\nEncrypted file directory: %s" %fileName
+
+                    result += "Encrypt success!\n"
+                    result += ct
+                    result += "\n\nEncrypted file directory:\n"
+                    result += "output/encrypted.txt"
                 else: #
                     result += "Fail encrypt file! There is no input value!"
             
@@ -122,7 +124,8 @@ class rc4Screen(QMainWindow):
                 jpg_file = open("output/ecrypted.jpg", "wb")
                 jpg_file.write(byteResult)
                 result += "Encrypt success!\n\n"
-                result += "Encrypted file directory: %s" %fileName
+                result += "Encrypted file directory:\n"
+                result += "output/encrypted.jpg"
                 jpg_file.close()
             else: #input dari keyboard
                 ct = rc4.enkripsi(input_text, key)
@@ -131,12 +134,16 @@ class rc4Screen(QMainWindow):
         else: #decrypt method
             if cipherMethod == "Text File":
                 pt = rc4.dekripsi(input_text, key)
+
                 text_file = open("output/decrypted.txt", "w")
                 text_file.write(pt)
                 text_file.close()
-                result += "Decrypt success!\n\n"
-                result += "Decrypted file directory: %s" %fileName
+
+                result += "Decrypt success!\n"
                 result += pt
+                result += "\n\nDecrypted file directory:\n"
+                result += "output/decrypted.txt"
+
                 
             elif cipherMethod == "Binary File":
                 #input_text = rc4.convertToChar(input_text)
