@@ -50,7 +50,6 @@ def XORproccessing(input, kunci):
     #if input teks
     if type(input) == str:
         teks = convertToAscii(input) #to array of ascii number
-        print("dia teks")
     else:
         teks = input
 
@@ -69,4 +68,5 @@ def enkripsi(plainteks, kunci):
 def dekripsi(cipherteks, kunci):
     cipherteks = codecs.decode(cipherteks, 'hex_codec')
     plainteks = XORproccessing(cipherteks, kunci)
+    print(plainteks)
     return codecs.decode(plainteks, 'hex_codec').decode('utf-8') #turn bytes type into string type

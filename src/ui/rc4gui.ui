@@ -256,7 +256,7 @@ QPlainTextEdit:hover {
      <string/>
     </property>
    </widget>
-   <widget class="QPushButton" name="enigmaBut">
+   <widget class="QPushButton" name="saveBut">
     <property name="geometry">
      <rect>
       <x>540</x>
@@ -404,7 +404,7 @@ background-color: none;</string>
    <zorder>processBut</zorder>
    <zorder>label_4</zorder>
    <zorder>keyInput</zorder>
-   <zorder>enigmaBut</zorder>
+   <zorder>saveBut</zorder>
    <zorder>encBut</zorder>
    <zorder>decBut</zorder>
    <zorder>inputType</zorder>

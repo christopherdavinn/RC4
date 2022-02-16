@@ -16,8 +16,27 @@ class rc4Screen(QMainWindow):
 
         self.inputBut.clicked.connect(self.inputFile) #dari file
         self.processBut.clicked.connect(self.processFile) #neken tombol process
-
+        self.saveBut.clicked.connect(self.saveFile)
         self.path = ""
+
+    def saveFile(self):
+        cipherMethod = self.inputType.currentText()
+
+        if cipherMethod == "Plain Text":
+            if self.encBut.isChecked():
+                result = self.outputTB.toPlainText() 
+                text_file = open("output/encrypted.txt", "w")
+                text_file.write(result)
+                text_file.close()
+                self.outputTB.setPlainText("%s \n\nFile saved!" %result)
+            else: 
+                result = self.outputTB.toPlainText() 
+                text_file = open("output/decrypted.txt", "w")
+                text_file.write(result)
+                text_file.close()
+                self.outputTB.setPlainText("%s \n\nFile saved!" %result)
+        else:
+            result += "File already saved"        
 
     def inputFile(self):
         file = QtWidgets.QFileDialog.getOpenFileName()
@@ -36,6 +55,8 @@ class rc4Screen(QMainWindow):
 
         elif cipherMethod == "Text File":
             if(self.path != ""): #ada input file
+                fileName = "output/" + str(uuid.uuid4()) + os.path.splitext(self.path)[1]
+
                 ext = os.path.splitext(self.path)[1]
                 if(ext == ".txt"):
                     f = open(self.path)
@@ -46,19 +67,23 @@ class rc4Screen(QMainWindow):
 
         else: #binaryfile
             if(self.path != ""): #ada input file
-                directory = os.path.dirname(os.path.realpath(__file__))
                 fileName = "output/" + str(uuid.uuid4()) + os.path.splitext(self.path)[1]
-                filePath = os.path.join(directory, fileName)
+
                 #open file
                 f = open(self.path, 'rb')
                 fileByte = f.read()
-                input_text = bytearray(fileByte) #array of ascii numbers
+                input_text = fileByte
+
+                input_text = bytearray(input_text) #array of ascii numbers
+                f.close()
                 
-                # input_text =[]
-                # a = 0
-                # for i in byte_array:
-                #     input_text.append(i)
-                #     a = a+1            
+                byte_array =[]
+                a = 0
+                for i in input_text:
+                    byte_array.append(i)
+                    a = a+1    
+                #print(input_text)
+                #input_text = bytearray(fileByte) #array of ascii numbers          
                 f.close()
             else:
                 result += ""
@@ -66,30 +91,38 @@ class rc4Screen(QMainWindow):
         #get method encrypt/decrypt
         if self.encBut.isChecked(): #ENKRIPSI
             if cipherMethod == "Text File":
-                if (ct != ''): #tidak kosong
+                if (self.path != ''): #tidak kosong
                     ct = rc4.enkripsi(input_text, key)
                     result += "Encrypt success!\n"
                     result += ct
-                    print(result)
+
                     text_file = open("output/encrypted.txt", "w")
                     text_file.write(ct)
                     text_file.close()
+                    result += "\n\nEncrypted file directory: %s" %fileName
                 else: #
                     result += "Fail encrypt file! There is no input value!"
             
             elif cipherMethod == "Binary File":
-                byte_array =[]
-                a = 0
-                for i in input_text:
-                    byte_array.append(i)
-                    a = a+1    
+                # input_text = bytearray(input_text) #array of ascii numbers
+                # f.close()
+                
+                # byte_array =[]
+                # a = 0
+                # for i in input_text:
+                #     byte_array.append(i)
+                #     a = a+1    
                 ct = rc4.enkripsi(byte_array, key)
                 byteResult = bytes(ct, 'utf-8')
+              
+                #byteResult = bytes(rc4.enkripsi(message, key))
                 #print(byte)
-                result += "Encrypt success!\n"
+
 
                 jpg_file = open("output/ecrypted.jpg", "wb")
                 jpg_file.write(byteResult)
+                result += "Encrypt success!\n\n"
+                result += "Encrypted file directory: %s" %fileName
                 jpg_file.close()
             else: #input dari keyboard
                 ct = rc4.enkripsi(input_text, key)
@@ -101,13 +134,16 @@ class rc4Screen(QMainWindow):
                 text_file = open("output/decrypted.txt", "w")
                 text_file.write(pt)
                 text_file.close()
-                result += "Decrypt success!\n"
+                result += "Decrypt success!\n\n"
+                result += "Decrypted file directory: %s" %fileName
                 result += pt
                 
             elif cipherMethod == "Binary File":
-                #ss = rc4.convertToChar(input_text)
+                #input_text = rc4.convertToChar(input_text)
 
-                pt = rc4.dekripsi(input_text, key)
+                byteResult = rc4.dekripsi(byte_array, key)
+                #byteResult = bytes(rc4.dekripsi(input_text, key))
+                #byteResult = pt
                 byteResult = bytes(pt, 'utf-8')
                 #print(byte)
                 result += "yeay"
@@ -119,7 +155,6 @@ class rc4Screen(QMainWindow):
             else: #keyboard
                 pt = rc4.dekripsi(input_text, key)
                 result += pt
-
 
         #nampilin output di tb
         self.outputTB.setPlainText(result)
