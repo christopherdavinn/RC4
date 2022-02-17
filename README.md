@@ -1,5 +1,5 @@
 # II4031 Kriptografi dan Koding
-Tugas 1 II4031 Kriptografi dan Koding - MyOwnCipher
+Tugas 2 II4031 Kriptografi dan Koding - MyOwnCipher
 
 ## Dibuat oleh
 * Leony Angela (18219032)
