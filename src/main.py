@@ -78,18 +78,8 @@ class rc4Screen(QMainWindow):
                 fileByte = f.read()
                 input_text = fileByte
                 
-                #######
-                print("ini input text(byte)")
-                print(input_text)
-                #######
-
                 input_text = bytearray(input_text) #array of ascii numbers
                 f.close()
-
-                #######
-                print("ini bytearray")
-                print(input_text)
-                #######
 
                 byte_array =[] 
                 a = 0
