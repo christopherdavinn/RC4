@@ -16,7 +16,6 @@ def getLsfr(kunci):
     for i in range (0, l-1, 4):
         proses = str(int(binary[i]) ^ int(binary[i+3])) + binary[i:i+3] 
         output = output + proses
-        #outlist[:0] = output #array of string of bytes ['0', '0', '1', '1', '1'] must be int(outlist[x])
     #turn to string
     outlist = [output[i:i+8] for i in range(0, l-1, 8)]
     result = bits2string(outlist)

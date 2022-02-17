@@ -2,10 +2,11 @@ from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QApplication, QMainWindow
 from PyQt5.uic import loadUi
 import sys
-import rc4
-import codecs
+
 import os
 import uuid
+
+import rc4
 
 #initial rc4 GUI
 class rc4Screen(QMainWindow):
@@ -72,12 +73,11 @@ class rc4Screen(QMainWindow):
         else: #binaryfile
             if(self.path != ""): #ada input file
                 fileName = "output/" + str(uuid.uuid4()) + os.path.splitext(self.path)[1] #output file location (optional buat detail di result)
-
                 #open file
                 f = open(self.path, 'rb')
                 fileByte = f.read()
                 input_text = fileByte
-                
+
                 input_text = bytearray(input_text) #array of ascii numbers
                 f.close()
 
@@ -86,6 +86,7 @@ class rc4Screen(QMainWindow):
                 for i in input_text: #ubah jadi list
                     byte_array.append(i)
                     a = a+1
+                
             else:
                 result += ""
 
@@ -109,8 +110,6 @@ class rc4Screen(QMainWindow):
                 ct = rc4.enkripsi(byte_array, key)
                 byteResult = bytes(ct, 'utf-8')
                 
-                #byteResult = bytes(rc4.enkripsi(message, key))
-
                 jpg_file = open("output/encrypted.jpg", "wb")
                 jpg_file.write(byteResult)
                 jpg_file.close()
@@ -135,34 +134,16 @@ class rc4Screen(QMainWindow):
                 result += "\n\nDecrypted file directory:\n"
                 result += "output/decrypted.txt"               
             elif cipherMethod == "Binary File":
-                #input_text = rc4.convertToChar(input_text)
-
-                #byete_array should be in bytes before run dekripsi
+                byteResult = rc4.dekripsiBin(byte_array, key)
+                byteResult = bytes(byteResult, 'utf-8')
                 
-                ########
-                #byte_array = bytes(byte_array, 'utf-8')
-                #str = ""
-                #a = 0
-                #for a in byte_array:
-                #    str =+ a
-                #    a += 1
-
-                #print(str)
-                #byte_array = bytes(str, 'ascii')
-                #byteResult = rc4.dekripsi(byte_array, key)
-
-                ########
-
-                byteResult = rc4.dekripsi(byte_array, key)
-                #byteResult = bytes(rc4.dekripsi(input_text, key))
-                #byteResult = pt
-                byteResult = bytes(pt, 'utf-8')
-                #print(byte)
-                result += "yeay"
-
                 jpg_file = open("output/decrypted.jpg", "wb")
                 jpg_file.write(byteResult)
                 jpg_file.close()
+
+                result += "Decrypt success!\n\n"
+                result += "Encrypted file directory:\n"
+                result += "output/decrypted.jpg"
             else: #keyboard
                 pt = rc4.dekripsi(input_text, key)
                 result += pt

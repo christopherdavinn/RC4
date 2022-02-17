@@ -1,5 +1,3 @@
-#program RC4
-#basic belum dimodifikasi
 import codecs
 import lsfr
 
@@ -68,5 +66,8 @@ def enkripsi(plainteks, kunci):
 def dekripsi(cipherteks, kunci):
     cipherteks = codecs.decode(cipherteks, 'hex_codec')
     plainteks = XORproccessing(cipherteks, kunci)
-    print(plainteks)
     return codecs.decode(plainteks, 'hex_codec').decode('utf-8') #turn bytes type into string type
+
+def dekripsiBin(cipherteks, kunci):
+    plainteks = XORproccessing(cipherteks, kunci)
+    return plainteks 
